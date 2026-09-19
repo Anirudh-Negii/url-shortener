@@ -44,4 +44,18 @@ router.post("/", async (req, res) => {
   });
 });
 
+/**
+ * @GET /api/url
+ */
+router.get("/", async (req, res) => {
+  const urls = await urlModel.find();
+
+  return res.status(200).json({
+    message: "URLs fetched successfully",
+    data: {
+      urls,
+    },
+  });
+});
+
 export default router;
