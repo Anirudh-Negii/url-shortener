@@ -1,5 +1,6 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const dummyUrls = [
   {
@@ -30,6 +31,17 @@ const App = () => {
   const [inputValue, setInputValue] = useState("");
   const [currentUrl, setCurrentUrl] = useState(null);
 
+  async function fetchUrls() {
+    const response = await axios.get("http://localhost:5173/api/url");
+    const responseData = response.data;
+
+    setUrls(responseData.data.urls);
+  }
+
+  useEffect(() => {
+    fetchUrls();
+  }, []);
+
   return (
     <main className="p-10 flex flex-col gap-4">
       <div className="w-full max-w-4xl p-2"></div>
@@ -37,9 +49,15 @@ const App = () => {
       <div className="w-full max-w-4xl p-2">
         {urls.map((url) => {
           return (
-            <div className="border border-neutral-200 p-2 flex gap-4 justify-evenly">
-              <p>{url.shortCode}</p>
+            <div className="border border-neutral-200 p-2 flex gap-4 justify-evenly items-center">
+              <a
+                href={`http://localhost:3000/${url.shortCode}`}
+                target="_blank"
+              >
+                {url.shortCode}
+              </a>
               <p className="truncate">{url.originalUrl}</p>
+              <p>{url.clicks}</p>
               <div className="flex gap-2">
                 <button className="p-2 rounded bg-blue-500 hover:bg-blue-600 text-white cursor-pointer">
                   COPY
