@@ -1,1 +1,28 @@
 @import "tailwindcss";
+
+@theme {
+	--font-sans: "Avenir Next", "Segoe UI", sans-serif;
+}
+
+:root {
+	font-family: "Avenir Next", "Segoe UI", sans-serif;
+	color: #171717;
+	background: #fffaf5;
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+}
+
+body {
+	min-width: 320px;
+	min-height: 100vh;
+	margin: 0;
+	background:
+		radial-gradient(circle at 90% 0%, rgba(251, 146, 60, 0.12), transparent 30rem),
+		#fffaf5;
+}
+
+button,
+a,
+input {
+	font: inherit;
+}
