@@ -38,13 +38,44 @@ const App = () => {
     setUrls(responseData.data.urls);
   }
 
+  async function createShortUrl() {
+    const response = await axios.post("http://localhost:5173/api/url", {
+      url: inputValue,
+    });
+    setCurrentUrl({
+      originalUrl: response.data.data.originalUrl,
+      shortCode: response.data.data.shortCode,
+    });
+
+    fetchUrls();
+  }
+
+  async function deleteUrl(id) {
+    await axios.delete(`http://localhost:5173/api/url/${id}`);
+    fetchUrls();
+  }
+
   useEffect(() => {
     fetchUrls();
   }, []);
 
   return (
     <main className="p-10 flex flex-col gap-4">
-      <div className="w-full max-w-4xl p-2"></div>
+      <div className="w-full max-w-4xl p-2 flex gap-4">
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          className="w-full p-2 border border-neutral-200 rounded"
+          placeholder="Enter Long URL"
+        />
+        <button
+          className="p-2 bg-orange-500 hover:bg-orange-600 text-white rounded cursor-pointer"
+          onClick={createShortUrl}
+        >
+          SHORTEN
+        </button>
+      </div>
       <div className="w-full max-w-4xl p-2"></div>
       <div className="w-full max-w-4xl p-2">
         {urls.map((url) => {
@@ -62,7 +93,10 @@ const App = () => {
                 <button className="p-2 rounded bg-blue-500 hover:bg-blue-600 text-white cursor-pointer">
                   COPY
                 </button>
-                <button className="p-2 rounded bg-red-500 hover:bg-red-600 text-white cursor-pointer">
+                <button
+                  className="p-2 rounded bg-red-500 hover:bg-red-600 text-white cursor-pointer"
+                  onClick={() => deleteUrl(url._id)}
+                >
                   DELETE
                 </button>
               </div>
